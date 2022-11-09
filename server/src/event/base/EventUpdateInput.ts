@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ArtistUpdateManyWithoutEventsInput } from "./ArtistUpdateManyWithoutEventsInput";
 import { ValidateNested, IsOptional, IsDate } from "class-validator";
 import { Type } from "class-transformer";
+import { UserEventUpdateManyWithoutEventsInput } from "./UserEventUpdateManyWithoutEventsInput";
 import { VenueWhereUniqueInput } from "../../venue/base/VenueWhereUniqueInput";
 @InputType()
 class EventUpdateInput {
@@ -51,6 +52,18 @@ class EventUpdateInput {
     nullable: true,
   })
   openers?: ArtistUpdateManyWithoutEventsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserEventUpdateManyWithoutEventsInput,
+  })
+  @ValidateNested()
+  @Type(() => UserEventUpdateManyWithoutEventsInput)
+  @IsOptional()
+  @Field(() => UserEventUpdateManyWithoutEventsInput, {
+    nullable: true,
+  })
+  userEvents?: UserEventUpdateManyWithoutEventsInput;
 
   @ApiProperty({
     required: false,

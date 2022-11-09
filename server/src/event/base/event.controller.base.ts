@@ -30,6 +30,9 @@ import { Event } from "./Event";
 import { ArtistFindManyArgs } from "../../artist/base/ArtistFindManyArgs";
 import { Artist } from "../../artist/base/Artist";
 import { ArtistWhereUniqueInput } from "../../artist/base/ArtistWhereUniqueInput";
+import { UserEventFindManyArgs } from "../../userEvent/base/UserEventFindManyArgs";
+import { UserEvent } from "../../userEvent/base/UserEvent";
+import { UserEventWhereUniqueInput } from "../../userEvent/base/UserEventWhereUniqueInput";
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class EventControllerBase {
@@ -409,6 +412,115 @@ export class EventControllerBase {
   ): Promise<void> {
     const data = {
       openers: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @nestAccessControl.UseRoles({
+    resource: "UserEvent",
+    action: "read",
+    possession: "any",
+  })
+  @common.Get("/:id/userEvents")
+  @ApiNestedQuery(UserEventFindManyArgs)
+  async findManyUserEvents(
+    @common.Req() request: Request,
+    @common.Param() params: EventWhereUniqueInput
+  ): Promise<UserEvent[]> {
+    const query = plainToClass(UserEventFindManyArgs, request.query);
+    const results = await this.service.findUserEvents(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+
+        event: {
+          select: {
+            id: true,
+          },
+        },
+
+        id: true,
+        notes: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  @common.Post("/:id/userEvents")
+  async connectUserEvents(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: UserEventWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userEvents: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  @common.Patch("/:id/userEvents")
+  async updateUserEvents(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: UserEventWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userEvents: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @nestAccessControl.UseRoles({
+    resource: "Event",
+    action: "update",
+    possession: "any",
+  })
+  @common.Delete("/:id/userEvents")
+  async disconnectUserEvents(
+    @common.Param() params: EventWhereUniqueInput,
+    @common.Body() body: UserEventWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      userEvents: {
         disconnect: body,
       },
     };

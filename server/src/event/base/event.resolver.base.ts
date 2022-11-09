@@ -27,6 +27,8 @@ import { EventFindUniqueArgs } from "./EventFindUniqueArgs";
 import { Event } from "./Event";
 import { ArtistFindManyArgs } from "../../artist/base/ArtistFindManyArgs";
 import { Artist } from "../../artist/base/Artist";
+import { UserEventFindManyArgs } from "../../userEvent/base/UserEventFindManyArgs";
+import { UserEvent } from "../../userEvent/base/UserEvent";
 import { Venue } from "../../venue/base/Venue";
 import { EventService } from "../event.service";
 
@@ -193,6 +195,26 @@ export class EventResolverBase {
     @graphql.Args() args: ArtistFindManyArgs
   ): Promise<Artist[]> {
     const results = await this.service.findOpeners(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [UserEvent])
+  @nestAccessControl.UseRoles({
+    resource: "UserEvent",
+    action: "read",
+    possession: "any",
+  })
+  async userEvents(
+    @graphql.Parent() parent: Event,
+    @graphql.Args() args: UserEventFindManyArgs
+  ): Promise<UserEvent[]> {
+    const results = await this.service.findUserEvents(parent.id, args);
 
     if (!results) {
       return [];

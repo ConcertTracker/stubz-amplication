@@ -16,6 +16,7 @@ import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { UserEventListRelationFilter } from "../../userEvent/base/UserEventListRelationFilter";
 import { VenueWhereUniqueInput } from "../../venue/base/VenueWhereUniqueInput";
 @InputType()
 class EventWhereInput {
@@ -64,6 +65,18 @@ class EventWhereInput {
     nullable: true,
   })
   openers?: ArtistListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserEventListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => UserEventListRelationFilter)
+  @IsOptional()
+  @Field(() => UserEventListRelationFilter, {
+    nullable: true,
+  })
+  userEvents?: UserEventListRelationFilter;
 
   @ApiProperty({
     required: false,
