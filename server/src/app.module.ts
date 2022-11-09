@@ -5,6 +5,7 @@ import { UserModule } from "./user/user.module";
 import { ArtistModule } from "./artist/artist.module";
 import { VenueModule } from "./venue/venue.module";
 import { EventModule } from "./event/event.module";
+import { UserEventModule } from "./userEvent/userEvent.module";
 import { ACLModule } from "./auth/acl.module";
 import { AuthModule } from "./auth/auth.module";
 import { HealthModule } from "./health/health.module";
@@ -21,6 +22,7 @@ import { GraphQLModule } from "@nestjs/graphql";
     ArtistModule,
     VenueModule,
     EventModule,
+    UserEventModule,
     ACLModule,
     AuthModule,
     HealthModule,

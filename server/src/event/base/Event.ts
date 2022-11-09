@@ -14,6 +14,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Artist } from "../../artist/base/Artist";
 import { ValidateNested, IsOptional, IsDate, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { UserEvent } from "../../userEvent/base/UserEvent";
 import { Venue } from "../../venue/base/Venue";
 @ObjectType()
 class Event {
@@ -69,6 +70,15 @@ class Event {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: false,
+    type: () => [UserEvent],
+  })
+  @ValidateNested()
+  @Type(() => UserEvent)
+  @IsOptional()
+  userEvents?: Array<UserEvent>;
 
   @ApiProperty({
     required: false,

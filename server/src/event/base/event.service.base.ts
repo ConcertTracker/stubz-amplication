@@ -10,7 +10,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, Event, Artist, Venue } from "@prisma/client";
+import { Prisma, Event, Artist, UserEvent, Venue } from "@prisma/client";
 
 export class EventServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -67,6 +67,17 @@ export class EventServiceBase {
         where: { id: parentId },
       })
       .openers(args);
+  }
+
+  async findUserEvents(
+    parentId: string,
+    args: Prisma.UserEventFindManyArgs
+  ): Promise<UserEvent[]> {
+    return this.prisma.event
+      .findUnique({
+        where: { id: parentId },
+      })
+      .userEvents(args);
   }
 
   async getVenue(parentId: string): Promise<Venue | null> {

@@ -1,4 +1,5 @@
 import { JsonValue } from "type-fest";
+import { UserEvent } from "../userEvent/UserEvent";
 
 export type User = {
   createdAt: Date;
@@ -7,5 +8,6 @@ export type User = {
   lastName: string | null;
   roles: JsonValue;
   updatedAt: Date;
+  userEvents?: Array<UserEvent>;
   username: string;
 };

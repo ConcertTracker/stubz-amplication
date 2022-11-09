@@ -21,6 +21,10 @@ import { EventList } from "./event/EventList";
 import { EventCreate } from "./event/EventCreate";
 import { EventEdit } from "./event/EventEdit";
 import { EventShow } from "./event/EventShow";
+import { UserEventList } from "./userEvent/UserEventList";
+import { UserEventCreate } from "./userEvent/UserEventCreate";
+import { UserEventEdit } from "./userEvent/UserEventEdit";
+import { UserEventShow } from "./userEvent/UserEventShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -74,6 +78,13 @@ const App = (): React.ReactElement => {
           edit={EventEdit}
           create={EventCreate}
           show={EventShow}
+        />
+        <Resource
+          name="UserEvent"
+          list={UserEventList}
+          edit={UserEventEdit}
+          create={UserEventCreate}
+          show={UserEventShow}
         />
       </Admin>
     </div>

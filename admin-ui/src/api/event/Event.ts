@@ -1,4 +1,5 @@
 import { Artist } from "../artist/Artist";
+import { UserEvent } from "../userEvent/UserEvent";
 import { Venue } from "../venue/Venue";
 
 export type Event = {
@@ -8,5 +9,6 @@ export type Event = {
   id: string;
   openers?: Array<Artist>;
   updatedAt: Date;
+  userEvents?: Array<UserEvent>;
   venue?: Venue | null;
 };

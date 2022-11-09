@@ -12,6 +12,7 @@ import {
 } from "react-admin";
 
 import { ArtistTitle } from "../artist/ArtistTitle";
+import { UserEventTitle } from "../userEvent/UserEventTitle";
 import { VenueTitle } from "../venue/VenueTitle";
 
 export const EventCreate = (props: CreateProps): React.ReactElement => {
@@ -34,6 +35,14 @@ export const EventCreate = (props: CreateProps): React.ReactElement => {
           format={(value: any) => value && value.map((v: any) => v.id)}
         >
           <SelectArrayInput optionText={ArtistTitle} />
+        </ReferenceArrayInput>
+        <ReferenceArrayInput
+          source="userEvents"
+          reference="UserEvent"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={UserEventTitle} />
         </ReferenceArrayInput>
         <ReferenceInput source="venue.id" reference="Venue" label="venue">
           <SelectInput optionText={VenueTitle} />

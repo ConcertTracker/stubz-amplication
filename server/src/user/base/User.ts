@@ -11,10 +11,17 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, IsOptional, IsJSON } from "class-validator";
+import {
+  IsDate,
+  IsString,
+  IsOptional,
+  IsJSON,
+  ValidateNested,
+} from "class-validator";
 import { Type } from "class-transformer";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
+import { UserEvent } from "../../userEvent/base/UserEvent";
 @ObjectType()
 class User {
   @ApiProperty({
@@ -69,6 +76,15 @@ class User {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: false,
+    type: () => [UserEvent],
+  })
+  @ValidateNested()
+  @Type(() => UserEvent)
+  @IsOptional()
+  userEvents?: Array<UserEvent>;
 
   @ApiProperty({
     required: true,
